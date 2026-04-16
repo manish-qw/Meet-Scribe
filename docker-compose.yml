@@ -1,0 +1,25 @@
+version: "3.9"
+
+services:
+  backend:
+    build: ./backend
+    container_name: meet-scribe-backend
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --workers 1
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./secrets/firebase-service-account.json:/run/secrets/firebase.json:ro
+    environment:
+      FIREBASE_CREDENTIALS_PATH: /run/secrets/firebase.json
+    env_file:
+      - ./backend/.env
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    container_name: meet-scribe-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    restart: unless-stopped

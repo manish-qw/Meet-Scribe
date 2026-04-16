@@ -1,0 +1,94 @@
+# OS and IDE Files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.gemini/
+
+# Virtual Environments and temporary project folders
+venv/
+.venv/
+env/
+ENV/
+venv_tmp/
+node_modules_tmp/
+backend/app/venv/
+backend/venv/
+
+# Node.js and Frontend
+node_modules/
+frontend/node_modules/
+dist/
+frontend/dist/
+build/
+.npm/
+.vite/
+.eslintcache
+.node_repl_history
+.yarn-integrity
+.dataconnect/
+.firebase/
+
+# Root level package-lock if irrelevant
+# package-lock.json
+
+# Python and Backend
+__pycache__/
+**/__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+backend/app/temp/
+backend/app/recordings/
+backend/app/transcripts/
+
+# Secrets and Environment Variables
+.env
+*.env
+.env.local
+.env.*
+secrets/
+**/secrets/
+firebase-service-account.json
+*.pem
+*.key
+
+# Logs and Debugging
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+firebase-debug.log*
+backend_error.log
+err.log
+uvicorn.log
+
+# Temporary / Debug files
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.txt
+!README.md
+meet_dom_text.txt
+bot_lobby_debug.png
+meet_screenshot_*
+scratch/
+
+# Development / Debug Scripts
+backend/capture.py
+backend/debug_bot.py
+backend/check.py
+backend/test_*.py
+backend/test_bot.py
+backend/test_connection.py
+backend/simple_test.py
+backend/db_check.py

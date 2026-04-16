@@ -1,85 +1,87 @@
-# Meet Scribe
+# 🎙️ Meet Scribe
 
-AI-powered bot that joins your Google Meet calls, captures live captions, and delivers structured summaries in real time.
+**AI that listens, so you don't have to.**
 
-## Architecture
+Meet Scribe is a state-of-the-art AI meeting assistant that automatically joins your Google Meet calls, captures every word, and delivers high-impact, structured summaries—all in real-time.
 
+---
+
+## Live Demo
+
+Experience Meet Scribe in action:  
+**[Live Website](https://meet-scribe-c0367.web.app)**
+
+---
+
+## Key Features
+
+- **Autonomous Bot**: Set it and forget it. The bot joins your meeting via a simple link.
+- **Transcription**: Watch as words turn into text with low-latency WebSocket streaming.
+- **AI Synthesis**: Powered by **Google Gemini Pro**, generating intelligent summaries, action items, and key takeaways.
+- **Interactive Dashboard**: Manage your meeting history, view transcripts, and export insights effortlessly.
+- **Private & Secure**: Enterprise-grade architecture ensuring your meeting data stays yours.
+
+---
+
+## Technical Masterpiece
+
+### The Tech Stack
+- **Frontend**: `React` + `Vite` + `TypeScript` + `Tailwind CSS`
+- **Backend**: `Python` + `FastAPI` (High-performance API layer)
+- **Bot Engine**: `Playwright` + `Headless Chromium`
+- **AI Engine**: `Google Gemini 1.5 Pro`
+- **Infrastructure**: `Firebase` (Auth, Firestore) + `WebSocket`
+
+### How It Works
+```mermaid
+graph TD
+    A[User] -->|Paste Meet Link| B(Frontend)
+    B -->|WebSocket Request| C(FastAPI Backend)
+    C -->|Spawn Subprocess| D[Playwright Bot]
+    D -->|Join Meet| E[Scrape Captions]
+    E -->|Stream| C
+    C -->|Real-time| B
+    E -->|Finish Meeting| F[Gemini AI]
+    F -->|Generate Summary| G[Firebase Database]
+    G -->|View Results| B
 ```
-┌──────────────────────────────────────────────────────────────┐
-│                        Frontend                              │
-│              React + Vite + Tailwind CSS                     │
-│         Firebase Auth  │  WebSocket Client                   │
-└──────────┬─────────────┴─────────────┬───────────────────────┘
-           │ HTTP (REST)               │ WebSocket
-┌──────────▼───────────────────────────▼───────────────────────┐
-│                       Backend (FastAPI)                       │
-│  ┌─────────────┐  ┌──────────────┐  ┌──────────────────────┐ │
-│  │ API Routes   │  │ WS Manager   │  │ Internal Callback    │ │
-│  └──────┬──────┘  └──────┬───────┘  └──────────┬───────────┘ │
-│         │                │                      │             │
-│  ┌──────▼──────────────────────────────────────▼───────────┐ │
-│  │              ProcessPoolExecutor                         │ │
-│  │  ┌────────────────────────────────────────────────────┐  │ │
-│  │  │  Bot Process (Playwright + Chromium)                │  │ │
-│  │  │  → Join Meet → Scrape Captions → Build Transcript  │  │ │
-│  │  └────────────────────────────────────────────────────┘  │ │
-│  └──────────────────────────────────────────────────────────┘ │
-│         │                │                      │             │
-│  ┌──────▼──────┐  ┌─────▼──────┐  ┌───────────▼──────────┐  │
-│  │  Firebase    │  │  Firebase  │  │  Google Gemini       │  │
-│  │  Admin SDK   │  │  Storage   │  │  (Summarization)     │  │
-│  └─────────────┘  └────────────┘  └──────────────────────┘  │
-└──────────────────────────────────────────────────────────────┘
-```
 
-## Quick Start
+---
+
+## Quick Installation
 
 ### Prerequisites
+- Python 3.9+
+- Node.js 18+
+- Docker (Optional)
+- Google Gemini API Key
 
-- Docker & Docker Compose
-- Firebase project with Auth and Storage enabled
-- Google Gemini API key
-
-### Setup
-
-1. **Clone and configure secrets:**
-
+### 1. Clone & Configure
 ```bash
+git clone https://github.com/manissh-meet-scribe/Meet_Scribe.git
+cd Meet_Scribe
+
+# Configure Backend
 cp backend/.env.example backend/.env
+
+# Configure Frontend
 cp frontend/.env.example frontend/.env.local
-# Fill in your actual values in both files
-
-# Place your Firebase service account JSON:
-mkdir -p secrets
-cp /path/to/your/firebase-service-account.json secrets/firebase-service-account.json
 ```
 
-2. **Run with Docker:**
-
+### 2. Launch with Docker (Recommended)
 ```bash
-# Production
 docker compose up --build
-
-# Development (with hot reload)
-docker compose -f docker-compose.yml -f docker-compose.dev.yml up --build
 ```
 
-3. **Access the app:**
-   - Frontend: http://localhost (prod) or http://localhost:5173 (dev)
-   - Backend API: http://localhost:8000
-   - Health check: http://localhost:8000/health
-
-### Local Development (without Docker)
-
+### 3. Manual Startup
 **Backend:**
 ```bash
 cd backend
 python -m venv venv
-venv\Scripts\activate  # Windows
+source venv/bin/activate  # venv\Scripts\activate on Windows
 pip install -r requirements.txt
 playwright install chromium
-playwright install-deps
-uvicorn app.main:app --reload --port 8000
+uvicorn app.main:app --reload
 ```
 
 **Frontend:**
@@ -89,32 +91,24 @@ npm install
 npm run dev
 ```
 
-## Environment Variables
+---
 
-### Backend (`backend/.env`)
+## Design Philosophy
+Meet Scribe was built with a **"Performance First"** mindset:
+- **Stateless Scaling**: Designed to run efficiently in containerized environments.
+- **Memory Optimization**: Headless Chromium is tuned to minimize RAM usage during long calls.
+- **Glassmorphism UI**: A premium, modern interface designed for focus and clarity.
 
-| Variable | Description |
-|----------|-------------|
-| `FIREBASE_CREDENTIALS_PATH` | Path to Firebase service account JSON |
-| `FIREBASE_STORAGE_BUCKET` | Firebase Storage bucket name |
-| `GEMINI_API_KEY` | Google Gemini API key |
-| `CORS_ORIGINS` | Comma-separated allowed origins |
+---
 
-### Frontend (`frontend/.env.local`)
+## Contributing
+Contributions are welcome! If you have ideas for new features or find bugs, please open an issue or submit a PR.
 
-| Variable | Description |
-|----------|-------------|
-| `VITE_API_URL` | Backend API URL |
-| `VITE_FIREBASE_API_KEY` | Firebase Web API key |
-| `VITE_FIREBASE_AUTH_DOMAIN` | Firebase Auth domain |
-| `VITE_FIREBASE_PROJECT_ID` | Firebase project ID |
-| `VITE_FIREBASE_STORAGE_BUCKET` | Firebase storage bucket |
-| `VITE_FIREBASE_MESSAGING_SENDER_ID` | Firebase sender ID |
-| `VITE_FIREBASE_APP_ID` | Firebase app ID |
+## License
+Distributed under the MIT License. See `LICENSE` for more information.
 
-## Key Design Decisions
+---
 
-- **Single Worker**: Uvicorn runs with `--workers 1` so WebSocket connections and process state live safely in one process. No Redis needed.
-- **ProcessPoolExecutor**: Each bot gets its own OS process with its own event loop — Uvicorn's loop is never blocked.
-- **Fake Media Streams**: Chromium uses `--use-fake-device-for-media-stream` — no video/audio decoding, RAM stays flat.
-- **Internal HTTP Callbacks**: Bot processes report status via HTTP POST to the main process, which forwards to WebSocket clients.
+<p align="center">
+  Built with ❤️ for better meetings.
+</p>

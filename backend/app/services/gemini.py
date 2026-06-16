@@ -1,3 +1,4 @@
+"""Gemini AI summarization service."""
 
 import json
 import re
@@ -8,8 +9,10 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+# Configure the Gemini API key
 genai.configure(api_key=settings.gemini_api_key)
 
+# Path to the system prompt file
 PROMPT_FILE = Path(__file__).parent.parent.parent / "prompts" / "summarize.txt"
 
 def preprocess_transcript(raw_text: str) -> str:
@@ -36,8 +39,10 @@ async def summarize_transcript(transcript: str) -> dict:
             ),
         )
 
+        # Parse the JSON response
         result = json.loads(response.text)
 
+        # Validate expected keys
         if not isinstance(result.get("overview"), str):
             result["overview"] = ""
         if not isinstance(result.get("key_points"), list):

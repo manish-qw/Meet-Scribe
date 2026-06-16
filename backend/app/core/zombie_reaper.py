@@ -1,3 +1,4 @@
+"""Zombie reaper for long-running bot processes."""
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from app.core.process_pool import get_active, cancel_bot

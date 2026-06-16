@@ -1,3 +1,4 @@
+"""WebSocket connection manager."""
 
 from fastapi import WebSocket
 import logging
@@ -30,6 +31,7 @@ class ConnectionManager:
             logger.warning(
                 "Failed to send WebSocket message for %s: %s", meeting_id, e
             )
+            # Client disconnected — remove from active
             self.disconnect(meeting_id)
 
     async def broadcast(self, data: dict) -> None:

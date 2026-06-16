@@ -1,3 +1,4 @@
+"""WebSocket event payload builders."""
 
 
 def status_event(status: str) -> dict:
